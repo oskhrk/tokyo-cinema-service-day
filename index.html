@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>東京映画館サービスデー</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: linear-gradient(to bottom right, #0f172a, #1e293b, #0f172a);
+            min-height: 100vh;
+        }
+    </style>
+</head>
+<body class="text-gray-100 p-4">
+    <div id="app" class="max-w-7xl mx-auto"></div>
+
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script type="text/babel" data-type="module">
+        const { useState } = React;
+        const { Film, Calendar, MapPin, ExternalLink, Navigation } = lucide;
+
+        const TokyoCinemaApp = () => {
+            const [currentDate] = useState(new Date());
+
+            const cinemaData = {
+                1: [
+                    { name: 'シネクイント', url: 'https://www.cinequinto.com/shibuya/', area: '渋谷・恵比寿' },
+                    { name: 'ホワイトシネクイント', url: 'https://www.cinequinto.com/white/', area: '渋谷・恵比寿' },
+                    { name: 'ユーロスペース', url: 'http://www.eurospace.co.jp/', area: '渋谷・恵比寿' },
+                    { name: 'ヒューマントラストシネマ渋谷', url: 'https://ttcg.jp/human_shibuya/', area: '渋谷・恵比寿' },
+                    { name: 'シネマート新宿', url: 'https://www.cinemart.co.jp/theater/shinjuku/', area: '新宿・高田馬場' },
+                    { name: 'バルト9', url: 'https://wald9.com/', area: '新宿・高田馬場' },
+                    { name: "K'sシネマ", url: 'https://www.ks-cinema.com/', area: '新宿・高田馬場' },
+                    { name: 'シネマリス', url: 'https://cinemarise.jp/', area: '神保町' },
+                    { name: '下北沢トリウッド', url: 'https://www.tolywood.com/', area: '下北沢' },
+                    { name: 'ポレポレ東中野', url: 'https://www.mmjp.or.jp/pole2/', area: 'その他23区内' },
+                    { name: '下高井戸シネマ', url: 'https://www.shimotakaidocinema.com/', area: '下北沢' },
+                    { name: '池袋シネマ・ロサ', url: 'http://www.cinemarosa.com/', area: '池袋' },
+                    { name: 'uplink吉祥寺', url: 'https://www.uplink.co.jp/kichijoji/', area: '吉祥寺' },
+                    { name: 'ストレンジャー', url: 'https://stranger.jp/', area: 'その他23区内' },
+                    { name: '阿佐ヶ谷Morc', url: 'https://asagaya-morc.jp/', area: '阿佐ヶ谷' },
+                    { name: 'シネマネコ', url: 'https://cinemaneko.com/', area: '23区外' },
+                    { name: 'キネカ大森', url: 'https://www.kineca.jp/', area: 'その他23区内' },
+                    { name: 'シネスイッチ銀座', url: 'https://www.cineswitch.com/', area: '東京・丸の内' }
+                ],
+                2: [{ name: 'シネマネコ', url: 'https://cinemaneko.com/', area: '23区外' }],
+                6: [{ name: 'ポレポレ東中野', url: 'https://www.mmjp.or.jp/pole2/', area: 'その他23区内' }],
+                11: [{ name: '下北沢トリウッド', url: 'https://www.tolywood.com/', area: '下北沢' }],
+                12: [{ name: 'シネマネコ', url: 'https://cinemaneko.com/', area: '23区外' }],
+                16: [{ name: 'ポレポレ東中野', url: 'https://www.mmjp.or.jp/pole2/', area: 'その他23区内' }],
+                22: [
+                    { name: 'シネクイント(ペア)', url: 'https://www.cinequinto.com/shibuya/', area: '渋谷・恵比寿' },
+                    { name: 'ホワイトシネクイント(ペア)', url: 'https://www.cinequinto.com/white/', area: '渋谷・恵比寿' },
+                    { name: '下北沢トリウッド', url: 'https://www.tolywood.com/', area: '下北沢' },
+                    { name: 'シネマネコ', url: 'https://cinemaneko.com/', area: '23区外' }
+                ],
+                25: [{ name: 'シネマート新宿', url: 'https://www.cinemart.co.jp/theater/shinjuku/', area: '新宿・高田馬場' }],
+                月曜: [
+                    { name: 'シアタス調布', url: 'https://www.cinemasunshine.co.jp/theaterlist/chofu/', area: '23区外' },
+                    { name: '阿佐ヶ谷Morc', url: 'https://asagaya-morc.jp/', area: '阿佐ヶ谷' },
+                    { name: 'シアターイメージフォーラム', url: 'https://www.imageforum.co.jp/', area: '渋谷・恵比寿' },
+                    { name: 'シネマート新宿（ペア）', url: 'https://www.cinemart.co.jp/theater/shinjuku/', area: '新宿・高田馬場' }
+                ],
+                火曜: [
+                    { name: 'ユーロスペース', url: 'http://www.eurospace.co.jp/', area: '渋谷・恵比寿' },
+                    { name: 'Bunkamurル・シネマ', url: 'https://www.bunkamura.co.jp/cinema/', area: '渋谷・恵比寿' },
+                    { name: '下高井戸シネマ', url: 'https://www.shimotakaidocinema.com/', area: '下北沢' }
+                ],
+                水曜: [
+                    { name: '新宿ピカデリー', url: 'https://www.smt-cinema.com/site/shinjuku/', area: '新宿・高田馬場' },
+                    { name: 'バルト9', url: 'https://wald9.com/', area: '新宿・高田馬場' },
+                    { name: '武蔵野館', url: 'https://shinjuku.musashino-k.jp/', area: '新宿・高田馬場' },
+                    { name: 'シネクイント', url: 'https://www.cinequinto.com/shibuya/', area: '渋谷・恵比寿' },
+                    { name: 'ホワイトシネクイント', url: 'https://www.cinequinto.com/white/', area: '渋谷・恵比寿' },
+                    { name: 'ヒューマントラストシネマ渋谷', url: 'https://ttcg.jp/human_shibuya/', area: '渋谷・恵比寿' },
+                    { name: 'シネマート新宿', url: 'https://www.cinemart.co.jp/theater/shinjuku/', area: '新宿・高田馬場' },
+                    { name: 'テアトル新宿', url: 'https://ttcg.jp/theatre_shinjuku/', area: '新宿・高田馬場' },
+                    { name: 'キノシネマ新宿', url: 'https://kinocinema.jp/shinjuku/', area: '新宿・高田馬場' },
+                    { name: '池袋シネマ・ロサ', url: 'http://www.cinemarosa.com/', area: '池袋' },
+                    { name: 'シネリーブル池袋', url: 'https://ttcg.jp/cinelibre_ikebukuro/', area: '池袋' },
+                    { name: '吉祥寺プラザ', url: 'https://www.cinecitta.co.jp/plaza/', area: '吉祥寺' },
+                    { name: '吉祥寺オデオン', url: 'https://www.cinecitta.co.jp/odeon/', area: '吉祥寺' },
+                    { name: 'アップリンク吉祥寺', url: 'https://www.uplink.co.jp/kichijoji/', area: '吉祥寺' },
+                    { name: '神保町シアター', url: 'https://www.iwanami-hall.com/', area: '神保町' },
+                    { name: '角川シネマ有楽町', url: 'https://www.kadokawa-cinema.jp/', area: '東京・丸の内' },
+                    { name: '丸の内TOEI', url: 'https://www.toei.co.jp/theater/marunouchi/', area: '東京・丸の内' },
+                    { name: '恵比寿ガーデンシネマ', url: 'https://gardencinema.jp/', area: '渋谷・恵比寿' },
+                    { name: '阿佐ヶ谷ラピュタ', url: 'https://www.laputa-asagaya.com/', area: '阿佐ヶ谷' },
+                    { name: 'シネマネコ', url: 'https://cinemaneko.com/', area: '23区外' },
+                    { name: 'キネカ大森', url: 'https://www.kineca.jp/', area: 'その他23区内' }
+                ],
+                木曜: [
+                    { name: 'Bunkamurル・シネマ(インターネット購入)', url: 'https://www.bunkamura.co.jp/cinema/', area: '渋谷・恵比寿' },
+                    { name: '阿佐ヶ谷Morc', url: 'https://asagaya-morc.jp/', area: '阿佐ヶ谷' },
+                    { name: 'シネマチュプキ田端(スタンプ２倍)', url: 'https://chupki.jpn.org/', area: 'その他23区内' }
+                ],
+                金曜: [{ name: 'アップリンク吉祥寺', url: 'https://www.uplink.co.jp/kichijoji/', area: '吉祥寺' }],
+                日曜: [
+                    { name: '角川シネマ有楽町', url: 'https://www.kadokawa-cinema.jp/', area: '東京・丸の内' },
+                    { name: 'Bunkamurル・シネマ（最終回）', url: 'https://www.bunkamura.co.jp/cinema/', area: '渋谷・恵比寿' }
+                ],
+                ラスト1本: [
+                    { name: '早稲田松竹', url: 'https://wasedashochiku.co.jp/', area: '新宿・高田馬場', type: '常時' },
+                    { name: '目黒シネマ', url: 'https://www.megurocinema.com/', area: '渋谷・恵比寿', type: '常時' }
+                ],
+                '18時以降': [{ name: '船堀シネパル', url: 'https://www.cinepara.com/', area: 'その他23区内', type: '常時' }],
+                '1000円': [
+                    { name: 'シネマブルースタジオ', url: 'http://cinemabravo.com/', area: '特殊施設', type: '常時' },
+                    { name: '国立映画アーカイブ', url: 'https://www.nfaj.go.jp/', area: '特殊施設', type: '常時' }
+                ],
+                不定期: [
+                    { name: 'アテネ・フランセ文化センター', url: 'https://www.athenee.jp/', area: '特殊施設' },
+                    { name: '神保町シアター', url: 'https://www.iwanami-hall.com/', area: '神保町' },
+                    { name: '写真美術館', url: 'https://topmuseum.jp/', area: '特殊施設' }
+                ]
+            };
+
+            const getTodayCinemasByArea = () => {
+                const day = currentDate.getDate();
+                const dayOfWeek = currentDate.getDay();
+                
+                let todayCinemas = [];
+                let alwaysCinemas = [];
+                
+                if (cinemaData[day]) {
+                    todayCinemas = [...todayCinemas, ...cinemaData[day]];
+                }
+                
+                const dayNames = ['日曜', '月曜', '火曜', '水曜', '木曜', '金曜', '土曜'];
+                const todayName = dayNames[dayOfWeek];
+                
+                if (cinemaData[todayName]) {
+                    todayCinemas = [...todayCinemas, ...cinemaData[todayName]];
+                }
+                
+                alwaysCinemas = [
+                    ...cinemaData['ラスト1本'],
+                    ...cinemaData['18時以降'],
+                    ...cinemaData['1000円']
+                ];
+                
+                const groupByArea = (cinemas) => {
+                    const areaMap = {};
+                    const seen = new Set();
+                    
+                    for (const cinema of cinemas) {
+                        if (!seen.has(cinema.name)) {
+                            seen.add(cinema.name);
+                            if (!areaMap[cinema.area]) {
+                                areaMap[cinema.area] = [];
+                            }
+                            areaMap[cinema.area].push(cinema);
+                        }
+                    }
+                    
+                    return areaMap;
+                };
+                
+                return {
+                    today: groupByArea(todayCinemas),
+                    always: groupByArea(alwaysCinemas)
+                };
+            };
+
+            const cinemasByArea = getTodayCinemasByArea();
+            
+            const areaOrder = [
+                '新宿・高田馬場', '渋谷・恵比寿', '池袋', '吉祥寺', '下北沢',
+                '神保町', '東京・丸の内', '阿佐ヶ谷', 'その他23区内', '23区外', '特殊施設'
+            ];
+
+            const renderAreaSection = (title, areaData) => {
+                if (!areaData || Object.keys(areaData).length === 0) return null;
+                
+                return React.createElement('div', { className: 'mb-10' },
+                    React.createElement('h3', { className: 'text-3xl font-bold mb-6 text-white border-b-2 border-slate-600 pb-3' }, title),
+                    areaOrder.map(area => {
+                        if (!areaData[area] || areaData[area].length === 0) return null;
+                        
+                        return React.createElement('div', { key: area, className: 'mb-6' },
+                            React.createElement('div', { className: 'flex items-center gap-2 mb-3' },
+                                React.createElement(MapPin, { size: 20, className: 'text-amber-400' }),
+                                React.createElement('h4', { className: 'text-lg font-semibold text-amber-400' },
+                                    `${area} (${areaData[area].length}館)`
+                                )
+                            ),
+                            React.createElement('div', { className: 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 ml-7' },
+                                areaData[area].map((cinema, index) =>
+                                    React.createElement('div', {
+                                        key: index,
+                                        className: 'bg-slate-800/50 backdrop-blur-md rounded-lg p-4 hover:bg-slate-700/50 transition-all duration-300 border border-slate-700'
+                                    },
+                                        React.createElement('h5', { className: 'font-semibold text-base mb-3 text-gray-200' }, cinema.name),
+                                        React.createElement('div', { className: 'flex gap-2' },
+                                            React.createElement('a', {
+                                                href: cinema.url,
+                                                target: '_blank',
+                                                rel: 'noopener noreferrer',
+                                                className: 'flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-slate-600 hover:bg-slate-500 rounded-lg transition-colors text-sm'
+                                            },
+                                                React.createElement(ExternalLink, { size: 16 }),
+                                                '上映情報'
+                                            ),
+                                            React.createElement('a', {
+                                                href: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(cinema.name)}`,
+                                                target: '_blank',
+                                                rel: 'noopener noreferrer',
+                                                className: 'flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-emerald-700 hover:bg-emerald-600 rounded-lg transition-colors text-sm'
+                                            },
+                                                React.createElement(Navigation, { size: 16 }),
+                                                '地図'
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        );
+                    })
+                );
+            };
+
+            return React.createElement('div', null,
+                React.createElement('header', { className: 'text-center mb-8 pt-8' },
+                    React.createElement('div', { className: 'flex items-center justify-center gap-3 mb-2' },
+                        React.createElement(Film, { size: 40 }),
+                        React.createElement('h1', { className: 'text-4xl font-bold' }, '東京映画館サービスデー')
+                    ),
+                    React.createElement('div', { className: 'flex items-center justify-center gap-2 text-gray-400' },
+                        React.createElement(Calendar, { size: 20 }),
+                        React.createElement('p', { className: 'text-lg' },
+                            `${currentDate.getFullYear()}年${currentDate.getMonth() + 1}月${currentDate.getDate()}日` +
+                            `(${['日', '月', '火', '水', '木', '金', '土'][currentDate.getDay()]}曜日)`
+                        )
+                    )
+                ),
+                renderAreaSection('📅 今日限定のサービスデー', cinemasByArea.today),
+                renderAreaSection('💰 特別料金', cinemasByArea.always),
+                React.createElement('footer', { className: 'mt-12 pb-8 text-center text-gray-500 text-sm' },
+                    React.createElement('p', null, '各映画館の上映情報は「上映情報」ボタンから確認できます')
+                )
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('app'));
+        root.render(React.createElement(TokyoCinemaApp));
+    </script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</body>
+</html>
