@@ -103,9 +103,9 @@
                 ],
                 25: [{ name: 'シネマート新宿', url: 'https://www.cinemart.co.jp/theater/shinjuku/', area: '新宿・高田馬場' }],
                 月曜: [
-                    { name: 'シアタス調布', url: 'https://www.cinemasunshine.co.jp/theaterlist/chofu/', area: '23区外' },
-                    { name: '阿佐ヶ谷Morc', url: 'https://asagaya-morc.jp/', area: '阿佐ヶ谷' },
-                    { name: 'シアターイメージフォーラム', url: 'https://www.imageforum.co.jp/', area: '渋谷・恵比寿' },
+                    { name: 'シアタス調布', url: 'https://www.aeoncinema.com/cinema/chofu/', area: '23区外', station: '調布', twitter: '@ac_chofu' },
+                    { name: '阿佐ヶ谷Morc', url: 'https://www.morc-asagaya.com/', area: '阿佐ヶ谷', station: '阿佐ヶ谷', twitter: '@morc_staff' },
+                    { name: 'シアターイメージフォーラム', url: 'https://www.imageforum.co.jp/', area: '渋谷・恵比寿', station: '渋谷', twitter: '@Image_forum' },
                     { name: 'シネマート新宿（ペア）', url: 'https://www.cinemart.co.jp/theater/shinjuku/', area: '新宿・高田馬場' }
                 ],
                 火曜: [
@@ -137,7 +137,7 @@
                 ],
                 木曜: [
                     { name: 'Bunkamurル・シネマ(インターネット購入)', url: 'https://www.bunkamura.co.jp/cinema/', area: '渋谷・恵比寿' },
-                    { name: '阿佐ヶ谷Morc', url: 'https://asagaya-morc.jp/', area: '阿佐ヶ谷' },
+                    { name: '阿佐ヶ谷Morc', url: 'https://www.morc-asagaya.com/', area: '阿佐ヶ谷' },
                     { name: 'シネマチュプキ田端(スタンプ２倍)', url: 'https://chupki.jpn.org/', area: 'その他23区内' }
                 ],
                 金曜: [{ name: 'アップリンク吉祥寺', url: 'https://www.uplink.co.jp/kichijoji/', area: '吉祥寺' }],
@@ -146,12 +146,12 @@
                     { name: 'Bunkamurル・シネマ（最終回）', url: 'https://www.bunkamura.co.jp/cinema/', area: '渋谷・恵比寿' }
                 ],
                 ラスト1本: [
-                    { name: '早稲田松竹', url: 'https://wasedashochiku.co.jp/', area: '新宿・高田馬場', type: '常時' },
-                    { name: '目黒シネマ', url: 'https://www.megurocinema.com/', area: '渋谷・恵比寿', type: '常時' }
+                    { name: '早稲田松竹（ラスト1本割引※最終回（一本）のみ）', url: 'https://wasedashochiku.co.jp/', area: '新宿・高田馬場', type: '常時' },
+                    { name: '目黒シネマ（ラスト1本割引※２本立て最終回の映画のみ）', url: 'http://www.okura-movie.co.jp/meguro_cinema/', area: '渋谷・恵比寿', type: '常時' }
                 ],
-                '18時以降': [{ name: '船堀シネパル', url: 'https://www.cinepara.com/', area: 'その他23区内', type: '常時' }],
+                '18時以降': [{ name: '船堀シネパル（ナイトショー割引※18時以降の上映）', url: 'https://www.towerhall.jp/movie/', area: 'その他23区内', type: '常時' }],
                 '1000円': [
-                    { name: 'シネマブルースタジオ', url: 'http://cinemabravo.com/', area: '特殊施設', type: '常時' },
+                    { name: 'シネマブルースタジオ（一律1,000円）', url: 'https://www.art-center.jp/tokyo/bluestudio/profile.html', area: '特殊施設', type: '常時' },
                     { name: '国立映画アーカイブ', url: 'https://www.nfaj.go.jp/', area: '特殊施設', type: '常時' },
                     { name: '新文芸坐（2本目割引・上映毎料金変動）', url: 'https://www.shin-bungeiza.com/', area: '池袋', type: '常時' }
                 ],
@@ -236,10 +236,20 @@
                                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 ml-7">
                                         {areaData[area].map((cinema, index) => (
                                             <div key={index} className="bg-slate-800/50 backdrop-blur-md rounded-lg p-4 hover:bg-slate-700/50 transition-all duration-300 border border-slate-700">
-                                                <h5 className="font-semibold text-base mb-3 text-gray-200">
-                                                    {cinema.name}
+                                                <h5 className="font-semibold text-base mb-1 text-gray-200">
+                                                    {cinema.name}{cinema.station && ` /${cinema.station}`}
                                                 </h5>
-                                                <div className="flex gap-2">
+                                                {cinema.twitter && (
+                                                    <a 
+                                                        href={`https://twitter.com/${cinema.twitter.replace('@', '')}`}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="text-xs text-blue-400 hover:text-blue-300 mb-2 inline-block"
+                                                    >
+                                                        {cinema.twitter}
+                                                    </a>
+                                                )}
+                                                <div className="flex gap-2 mt-3">
                                                     <a
                                                         href={cinema.url}
                                                         target="_blank"
@@ -285,7 +295,7 @@
                             </p>
                         </div>
                     </header>
-                    {renderAreaSection('📅 今日限定のサービスデー', cinemasByArea.today)}
+                    {renderAreaSection(`📅 ${['日', '月', '火', '水', '木', '金', '土'][currentDate.getDay()]}曜サービスデーの映画館`, cinemasByArea.today)}
                     {renderAreaSection('💰 特別料金', cinemasByArea.always)}
                     <footer className="mt-12 pb-8 text-center text-gray-500 text-sm">
                         <p>各映画館の上映情報は「上映情報」ボタンから確認できます</p>
