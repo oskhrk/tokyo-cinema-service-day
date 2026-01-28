@@ -81,23 +81,23 @@
 
             const cinemaData = {
                 1: [
-                    { name: 'シネクイント', url: 'https://www.cinequinto.com/shibuya/', area: '渋谷・恵比寿エリア' },
-                    { name: 'ホワイトシネクイント', url: 'https://www.cinequinto.com/white/', area: '渋谷・恵比寿エリア' },
-                    { name: 'ユーロスペース', url: 'http://www.eurospace.co.jp/', area: '渋谷・恵比寿エリア' },
-                    { name: 'ヒューマントラストシネマ渋谷', url: 'https://ttcg.jp/human_shibuya/', area: '渋谷・恵比寿エリア' },
-                    { name: 'シネマート新宿', url: 'https://www.cinemart.co.jp/theater/shinjuku/', area: '新宿・高田馬場エリア' },
-                    { name: 'バルト9', url: 'https://wald9.com/', area: '新宿・高田馬場エリア' },
+                    { name: 'シネクイント', url: 'https://www.cinequinto.com/shibuya/', area: '渋谷・恵比寿エリア', station: '渋谷駅', twitter: '@cinequinto' },
+                    { name: 'ホワイトシネクイント', url: 'https://www.cinequinto.com/white/', area: '渋谷・恵比寿エリア', station: '渋谷駅', twitter: '@whitecinequinto' },
+                    { name: 'ユーロスペース', url: 'http://www.eurospace.co.jp/', area: '渋谷・恵比寿エリア', station: '渋谷駅', twitter: '@euro_space' },
+                    { name: 'ヒューマントラストシネマ渋谷', url: 'https://ttcg.jp/human_shibuya/', area: '渋谷・恵比寿エリア', station: '渋谷駅', twitter: '@htc_shibuya' },
+                    { name: 'シネマート新宿', url: 'https://www.cinemart.co.jp/theater/shinjuku/', area: '新宿・高田馬場エリア', station: '新宿駅', twitter: '@cinemart_tokyo' },
+                    { name: '新宿バルト9', url: 'https://tjoy.jp/shinjuku_wald9', area: '新宿・高田馬場エリア', station: '新宿駅', twitter: '@wald_9' },
                     { name: "K'sシネマ", url: 'https://www.ks-cinema.com/', area: '新宿・高田馬場エリア' },
                     { name: 'シネマリス', url: 'https://cinemarise.jp/', area: '神保町エリア' },
                     { name: '下北沢トリウッド', url: 'https://www.tolywood.com/', area: '下北沢エリア' },
-                    { name: 'ポレポレ東中野', url: 'https://www.mmjp.or.jp/pole2/', area: 'その他23区内' },
-                    { name: '下高井戸シネマ', url: 'https://www.shimotakaidocinema.com/', area: '下北沢エリア' },
-                    { name: '池袋シネマ・ロサ', url: 'http://www.cinemarosa.com/', area: '池袋エリア' },
-                    { name: 'uplink吉祥寺', url: 'https://www.uplink.co.jp/kichijoji/', area: '吉祥寺エリア' },
+                    { name: 'ポレポレ東中野', url: 'https://www.mmjp.or.jp/pole2/', area: 'その他23区内', station: '東中野駅', twitter: '@Pole2_theater' },
+                    { name: '下高井戸シネマ', url: 'https://www.shimotakaidocinema.com/', area: '下北沢エリア', station: '下高井戸駅', twitter: '@shimotakacinema' },
+                    { name: '池袋シネマ・ロサ', url: 'http://www.cinemarosa.net/', area: '池袋エリア', station: '池袋駅', twitter: '@Cinema_ROSA' },
+                    { name: 'uplink吉祥寺', url: 'https://joji.uplink.co.jp/', area: '吉祥寺エリア', station: '吉祥寺駅', twitter: '@uplink_joji' },
                     { name: 'ストレンジャー', url: 'https://stranger.jp/', area: 'その他23区内' },
-                    { name: '阿佐ヶ谷Morc', url: 'https://www.morc-asagaya.com/', area: '阿佐ヶ谷エリア' },
-                    { name: 'シネマネコ', url: 'https://cinemaneko.com/', area: '23区外' },
-                    { name: 'キネカ大森', url: 'https://www.kineca.jp/', area: 'その他23区内' },
+                    { name: '阿佐ヶ谷Morc', url: 'https://www.morc-asagaya.com/', area: '阿佐ヶ谷エリア', station: '阿佐ヶ谷駅', twitter: '@morc_staff' },
+                    { name: 'シネマネコ', url: 'https://cinema-neko.com/', area: '23区外', station: '武蔵境駅', twitter: '@CinemaNeko_JP' },
+                    { name: 'キネカ大森', url: 'https://ttcg.jp/cineka_omori/', area: 'その他23区内', station: '大森駅', twitter: '@kineca_omori' },
                     { name: 'シネスイッチ銀座', url: 'https://www.cineswitch.com/', area: '東京・丸の内エリア' }
                 ],
                 2: [{ name: 'シネマネコ', url: 'https://cinemaneko.com/', area: '23区外' }],
@@ -270,7 +270,7 @@
                                                         上映情報
                                                     </a>
                                                     <a
-                                                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(cinema.name)}`}
+                                                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(cinema.station || cinema.name)}`}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
                                                         className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-emerald-700 hover:bg-emerald-600 rounded-lg transition-colors text-sm"
@@ -320,8 +320,32 @@
                     </div>
                     {renderAreaSection(`📅 ${['日', '月', '火', '水', '木', '金', '土'][currentDate.getDay()]}曜サービスデーの映画館`, cinemasByArea.today)}
                     {renderAreaSection('💰 特殊料金', cinemasByArea.always)}
-                    <footer className="mt-12 pb-8 text-center text-gray-500 text-sm">
-                        <p>各映画館の上映情報は「上映情報」ボタンから確認できます</p>
+                    
+                    {/* フッター上の広告エリア */}
+                    <div className="max-w-3xl mx-auto mb-8 mt-12">
+                        <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-6 text-center">
+                            <p className="text-xs text-gray-500 mb-3">PR</p>
+                            <div className="flex items-center justify-center">
+                                <p className="text-gray-500 text-sm">
+                                    広告スペース<br/>
+                                    (2つ目の広告コードをここに挿入できます)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <footer className="mt-12 pb-8 text-center">
+                        <div className="mb-6">
+                            <a
+                                href="https://forms.gle/kKJuSuZCk8C7JdxW9"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-block px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors font-semibold"
+                            >
+                                📝 Webページアップデート要望フォーム
+                            </a>
+                        </div>
+                        <p className="text-gray-500 text-sm">各映画館の上映情報は「上映情報」ボタンから確認できます</p>
                     </footer>
                 </div>
             );
