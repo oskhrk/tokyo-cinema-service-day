@@ -6,7 +6,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>東京映画館サービスデー v1.1</title>
+    <title>東京映画館サービスデー v1.3</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230a0e1a'/%3E%3Crect x='15' y='20' width='70' height='60' rx='5' fill='%23f59e0b' stroke='%23ef4444' stroke-width='2'/%3E%3Cline x1='15' y1='35' x2='85' y2='35' stroke='%23ef4444' stroke-width='2'/%3E%3Ccircle cx='30' cy='27.5' r='2' fill='%23ef4444'/%3E%3Ccircle cx='70' cy='27.5' r='2' fill='%23ef4444'/%3E%3Cpath d='M35 50 L45 50 L40 60 Z M55 50 L65 50 L60 60 Z' fill='%23ef4444'/%3E%3Crect x='42' y='45' width='16' height='4' fill='%23ef4444'/%3E%3Crect x='42' y='65' width='16' height='4' fill='%23ef4444'/%3E%3C/svg%3E">
@@ -114,6 +114,7 @@
             const [currentDate] = useState(new Date());
             const [movies, setMovies] = useState([]);
             const [loadingMovies, setLoadingMovies] = useState(true);
+            const [expandedTweets, setExpandedTweets] = useState({});
 
             // TMDb APIから現在上映中の評価が高い映画を取得
             React.useEffect(() => {
@@ -288,6 +289,26 @@
 
             const cinemasByArea = getTodayCinemasByArea();
             
+            // ツイート表示のトグル
+            const toggleTweet = (cinemaName) => {
+                setExpandedTweets(prev => ({
+                    ...prev,
+                    [cinemaName]: !prev[cinemaName]
+                }));
+            };
+            
+            // X埋め込みスクリプトをロード
+            React.useEffect(() => {
+                const script = document.createElement('script');
+                script.src = 'https://platform.twitter.com/widgets.js';
+                script.async = true;
+                document.body.appendChild(script);
+                
+                return () => {
+                    document.body.removeChild(script);
+                };
+            }, []);
+            
             const areaOrder = [
                 '新宿・高田馬場エリア', '渋谷・恵比寿エリア', '池袋エリア', '吉祥寺エリア', '下北沢エリア',
                 '神保町エリア', '東京・丸の内エリア', '阿佐ヶ谷エリア', 'その他23区内', '23区外', '特殊施設'
@@ -318,17 +339,14 @@
                                                         {cinema.name}{cinema.station && ` /${cinema.station}`}
                                                     </h5>
                                                     {cinema.twitter && (
-                                                        <a 
-                                                            href={`https://twitter.com/${cinema.twitter.replace('@', '')}`}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            className="text-xs text-sky-400 hover:text-sky-300 inline-block mt-1.5 transition-colors"
-                                                        >
-                                                            {cinema.twitter}
-                                                        </a>
+                                                        <div className="mt-1.5">
+                                                            <span className="text-xs text-sky-400">
+                                                                {cinema.twitter}
+                                                            </span>
+                                                        </div>
                                                     )}
                                                 </div>
-                                                <div className="flex gap-2">
+                                                <div className="flex gap-2 mb-3">
                                                     <a
                                                         href={cinema.url}
                                                         target="_blank"
@@ -348,6 +366,30 @@
                                                         地図
                                                     </a>
                                                 </div>
+                                                {cinema.twitter && (
+                                                    <div>
+                                                        <button
+                                                            onClick={() => toggleTweet(cinema.name)}
+                                                            className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-gradient-to-r from-sky-700 to-sky-800 hover:from-sky-600 hover:to-sky-700 rounded-lg transition-all duration-200 text-sm font-medium shadow-sm"
+                                                        >
+                                                            {expandedTweets[cinema.name] ? '投稿を閉じる' : '最新投稿を見る'}
+                                                        </button>
+                                                        {expandedTweets[cinema.name] && (
+                                                            <div className="mt-3 bg-slate-900/50 rounded-lg p-3">
+                                                                <a 
+                                                                    className="twitter-timeline" 
+                                                                    data-lang="ja"
+                                                                    data-theme="dark"
+                                                                    data-tweet-limit="1"
+                                                                    data-chrome="noheader nofooter noborders transparent"
+                                                                    href={`https://twitter.com/${cinema.twitter.replace('@', '')}`}
+                                                                >
+                                                                    読み込み中...
+                                                                </a>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                )}
                                             </div>
                                         ))}
                                     </div>
@@ -456,7 +498,7 @@
                             </a>
                         </div>
                         <p className="text-gray-500 text-sm">各映画館の上映情報は「上映情報」ボタンから確認できます</p>
-                        <p className="text-gray-600 text-xs mt-2">v1.1 - 2026.01.29</p>
+                        <p className="text-gray-600 text-xs mt-2">v1.3 - 2026.01.29</p>
                     </footer>
                 </div>
             );
