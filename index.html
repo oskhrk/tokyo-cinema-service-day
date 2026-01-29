@@ -110,7 +110,7 @@
         const TokyoCinemaApp = () => {
             const [currentDate] = useState(new Date());
             const [movies, setMovies] = useState([]);
-            const [moviesLoading, setMoviesLoading] = useState(true);
+            const [loadingMovies, setLoadingMovies] = useState(true);
 
             // TMDb APIから現在上映中の評価が高い映画を取得
             React.useEffect(() => {
@@ -128,17 +128,15 @@
                             .slice(0, 10);
                         
                         setMovies(sortedMovies);
-                        setMoviesLoading(false);
+                        setLoadingMovies(false);
                     } catch (error) {
                         console.error('映画情報の取得に失敗しました:', error);
-                        setMoviesLoading(false);
+                        setLoadingMovies(false);
                     }
                 };
                 
                 fetchMovies();
             }, []);
-            const [movies, setMovies] = useState([]);
-            const [loadingMovies, setLoadingMovies] = useState(true);
 
             const cinemaData = {
                 1: [
@@ -231,32 +229,6 @@
                     { name: '東京都写真美術館', url: 'https://topmuseum.jp/', area: '特殊施設', station: '恵比寿駅', twitter: '@topmuseum' }
                 ]
             };
-
-            // TMDb APIから現在上映中の評価が高い映画を取得
-            useEffect(() => {
-                const fetchMovies = async () => {
-                    try {
-                        const API_KEY = '4b0e54a8ca3b0226d0d1ec724aabe1c6';
-                        const response = await fetch(
-                            `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&language=ja-JP&region=JP&page=1`
-                        );
-                        const data = await response.json();
-                        
-                        // 評価が高い順にソートして上位10件を取得
-                        const topMovies = data.results
-                            .sort((a, b) => b.vote_average - a.vote_average)
-                            .slice(0, 10);
-                        
-                        setMovies(topMovies);
-                        setLoadingMovies(false);
-                    } catch (error) {
-                        console.error('映画データの取得に失敗しました:', error);
-                        setLoadingMovies(false);
-                    }
-                };
-                
-                fetchMovies();
-            }, []);
 
             const getTodayCinemasByArea = () => {
                 const day = currentDate.getDate();
@@ -400,7 +372,7 @@
                             🎬 現在上映中の評価が高い映画
                         </h2>
                         
-                        {moviesLoading ? (
+                        {loadingMovies ? (
                             <div className="text-center py-8">
                                 <p className="text-gray-400">読み込み中...</p>
                             </div>
