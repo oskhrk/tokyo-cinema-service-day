@@ -170,9 +170,9 @@
                     { name: 'キネカ大森', url: 'https://www.kineca.jp/', area: 'その他23区内' }
                 ],
                 木曜: [
-                    { name: 'Bunkamuraル・シネマ 渋谷宮下(インターネット購入)', url: 'https://www.bunkamura.co.jp/cinema/', area: '渋谷・恵比寿エリア' },
-                    { name: '阿佐ヶ谷Morc', url: 'https://www.morc-asagaya.com/', area: '阿佐ヶ谷エリア' },
-                    { name: 'シネマチュプキ田端(スタンプ２倍)', url: 'https://chupki.jpn.org/', area: 'その他23区内' }
+                    { name: 'Bunkamuraル・シネマ 渋谷宮下(インターネット購入)', url: 'https://www.bunkamura.co.jp/cinema/', area: '渋谷・恵比寿エリア', twitter: '@BunkamuraCinema' },
+                    { name: '阿佐ヶ谷Morc', url: 'https://www.morc-asagaya.com/', area: '阿佐ヶ谷エリア', twitter: '@morc_staff' },
+                    { name: 'CINEMA Chupki TABATA(スタンプ２倍)', url: 'https://chupki.jpn.org/', area: 'その他23区内', station: '田端駅', twitter: '@cinemachupki', mapUrl: 'https://maps.app.goo.gl/ok3if7ggrBVWBuk37' }
                 ],
                 金曜: [{ name: 'アップリンク吉祥寺', url: 'https://www.uplink.co.jp/kichijoji/', area: '吉祥寺エリア' }],
                 日曜: [
@@ -296,7 +296,7 @@
                                                         上映情報
                                                     </a>
                                                     <a
-                                                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(cinema.station || cinema.name)}`}
+                                                        href={cinema.mapUrl || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(cinema.station || cinema.name)}`}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
                                                         className="flex-1 flex items-center justify-center gap-2 px-3 py-2.5 bg-gradient-to-r from-emerald-700 to-emerald-800 hover:from-emerald-600 hover:to-emerald-700 rounded-lg transition-all duration-200 text-sm font-medium shadow-sm"
@@ -344,7 +344,7 @@
                             </div>
                         </div>
                     </div>
-                    {renderAreaSection(`📅 ${['日', '月', '火', '水', '木', '金', '土'][currentDate.getDay()]}曜サービスデーの映画館`, cinemasByArea.today)}
+                    {renderAreaSection(`📅 ${currentDate.getDate()}日${['日', '月', '火', '水', '木', '金', '土'][currentDate.getDay()]}曜サービスデーの映画館`, cinemasByArea.today)}
                     {renderAreaSection('💰 特殊料金', cinemasByArea.always)}
                     
                     {/* フッター上の広告エリア */}
