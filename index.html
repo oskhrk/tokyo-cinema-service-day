@@ -6,7 +6,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>東京映画館サービスデー 2026.01.29.003</title>
+    <title>Cinema Service Day 2026.01.29.004</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230a0e1a'/%3E%3Crect x='15' y='20' width='70' height='60' rx='5' fill='%23f59e0b' stroke='%23ef4444' stroke-width='2'/%3E%3Cline x1='15' y1='35' x2='85' y2='35' stroke='%23ef4444' stroke-width='2'/%3E%3Ccircle cx='30' cy='27.5' r='2' fill='%23ef4444'/%3E%3Ccircle cx='70' cy='27.5' r='2' fill='%23ef4444'/%3E%3Cpath d='M35 50 L45 50 L40 60 Z M55 50 L65 50 L60 60 Z' fill='%23ef4444'/%3E%3Crect x='42' y='45' width='16' height='4' fill='%23ef4444'/%3E%3Crect x='42' y='65' width='16' height='4' fill='%23ef4444'/%3E%3C/svg%3E">
@@ -363,9 +363,9 @@
                     <header className="text-center mb-8 pt-8">
                         <div className="flex items-center justify-center gap-3 mb-3">
                             <Film size={48} className="text-amber-400" />
-                            <h1 className="text-5xl font-bold title-gradient">東京映画館サービスデー</h1>
+                            <h1 className="text-5xl font-bold title-gradient">Cinema Service Day</h1>
                         </div>
-                        <p className="text-gray-400 text-lg mb-4 font-light">サービスデー料金で見ることができる映画館に特化したWebサイト</p>
+                        <p className="text-gray-400 text-lg mb-4 font-light">今日サービスデー料金で見れる映画館に行こう！</p>
                         <div className="flex items-center justify-center gap-2 text-gray-500">
                             <Calendar size={18} />
                             <p className="text-base">
@@ -428,6 +428,25 @@
                             </div>
                         </div>
                     </div>
+                    
+                    {/* 管理人の一言 */}
+                    <div className="max-w-3xl mx-auto mb-8">
+                        <div className="flex items-start gap-3 bg-slate-800/30 border border-slate-700 rounded-lg p-6">
+                            <div className="flex-shrink-0">
+                                <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-orange-600 rounded-full flex items-center justify-center text-2xl">
+                                    👤
+                                </div>
+                            </div>
+                            <div className="flex-1">
+                                <p className="text-sm text-gray-400 mb-2">管理人</p>
+                                <div className="relative bg-slate-700/50 rounded-2xl rounded-tl-none p-4 border border-slate-600">
+                                    <p className="text-gray-200">確定申告を早く終わらせたい</p>
+                                    <div className="absolute -top-2 -left-2 w-4 h-4 bg-slate-700/50 border-l border-t border-slate-600 transform rotate-45"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
                     {renderAreaSection(`📅 ${currentDate.getDate()}日${['日', '月', '火', '水', '木', '金', '土'][currentDate.getDay()]}曜サービスデーの映画館`, cinemasByArea.today)}
                     {renderAreaSection('💰 特殊料金', cinemasByArea.always)}
                     
@@ -456,7 +475,7 @@
                             </a>
                         </div>
                         <p className="text-gray-500 text-sm">各映画館の上映情報は「上映情報」ボタンから確認できます</p>
-                        <p className="text-gray-600 text-xs mt-2">2026.01.29.003</p>
+                        <p className="text-gray-600 text-xs mt-2">2026.01.29.004</p>
                     </footer>
                 </div>
             );
