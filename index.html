@@ -6,7 +6,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>Cinema Service Day 2026.01.29.006</title>
+    <title>Cinema Service Day 2026.01.30.002</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230a0e1a'/%3E%3Crect x='15' y='20' width='70' height='60' rx='5' fill='%23f59e0b' stroke='%23ef4444' stroke-width='2'/%3E%3Cline x1='15' y1='35' x2='85' y2='35' stroke='%23ef4444' stroke-width='2'/%3E%3Ccircle cx='30' cy='27.5' r='2' fill='%23ef4444'/%3E%3Ccircle cx='70' cy='27.5' r='2' fill='%23ef4444'/%3E%3Cpath d='M35 50 L45 50 L40 60 Z M55 50 L65 50 L60 60 Z' fill='%23ef4444'/%3E%3Crect x='42' y='45' width='16' height='4' fill='%23ef4444'/%3E%3Crect x='42' y='65' width='16' height='4' fill='%23ef4444'/%3E%3C/svg%3E">
@@ -112,6 +112,7 @@
 
         const TokyoCinemaApp = () => {
             const [currentDate] = useState(new Date());
+            const [currentHour] = useState(new Date().getHours());
             const [movies, setMovies] = useState([]);
             const [loadingMovies, setLoadingMovies] = useState(true);
 
@@ -125,16 +126,14 @@
                         );
                         const data = await response.json();
                         
-                        // 日本で人気（投票数が多い）かつ評価が高い順にソートして上位5件取得
                         const sortedMovies = data.results
-                            .filter(movie => movie.vote_count > 50) // 投票数50以上の作品のみ
+                            .filter(movie => movie.vote_count > 50)
                             .sort((a, b) => {
-                                // 投票数と評価を組み合わせたスコアでソート
                                 const scoreA = a.vote_average * Math.log(a.vote_count + 1);
                                 const scoreB = b.vote_average * Math.log(b.vote_count + 1);
                                 return scoreB - scoreA;
                             })
-                            .slice(0, 5); // 5件に変更
+                            .slice(0, 5);
                         
                         setMovies(sortedMovies);
                         setLoadingMovies(false);
@@ -152,7 +151,7 @@
                     { name: 'シネクイント', url: 'https://www.cinequinto.com/shibuya/', area: '渋谷・恵比寿エリア', station: '渋谷駅', twitter: '@cinequinto' },
                     { name: 'ホワイトシネクイント', url: 'https://www.cinequinto.com/white/', area: '渋谷・恵比寿エリア', station: '渋谷駅', twitter: '@whitecinequinto' },
                     { name: 'ユーロスペース', url: 'http://www.eurospace.co.jp/', area: '渋谷・恵比寿エリア', station: '渋谷駅', twitter: '@euro_space' },
-                    { name: 'ヒューマントラストシネマ渋谷', url: 'https://ttcg.jp/human_shibuya/', area: '渋谷・恵比寿エリア', station: '渋谷駅', twitter: '@htc_shibuya' },
+                    { name: 'ヒューマントラストシネマ渋谷', url: 'https://ttcg.jp/human_shibuya/', area: '渋谷・恵比寿エリア', station: '渋谷駅', twitter: '@htc_shibuya', mapUrl: 'https://maps.app.goo.gl/vbX8CD1bPHuHKCZE8' },
                     { name: 'シネマート新宿', url: 'https://www.cinemart.co.jp/theater/shinjuku/', area: '新宿・高田馬場エリア', station: '新宿駅', twitter: '@cinemart_tokyo' },
                     { name: '新宿バルト9', url: 'https://tjoy.jp/shinjuku_wald9', area: '新宿・高田馬場エリア', station: '新宿駅', twitter: '@wald_9' },
                     { name: "K'sシネマ", url: 'https://www.ks-cinema.com/', area: '新宿・高田馬場エリア' },
@@ -166,7 +165,41 @@
                     { name: '阿佐ヶ谷Morc', url: 'https://www.morc-asagaya.com/', area: '阿佐ヶ谷エリア', station: '阿佐ヶ谷駅', twitter: '@morc_staff' },
                     { name: 'シネマネコ', url: 'https://cinema-neko.com/', area: '23区外', station: '武蔵境駅', twitter: '@CinemaNeko_JP' },
                     { name: 'キネカ大森', url: 'https://ttcg.jp/cineka_omori/', area: 'その他23区内', station: '大森駅', twitter: '@kineca_omori' },
-                    { name: 'シネスイッチ銀座', url: 'https://www.cineswitch.com/', area: '東京・丸の内エリア' }
+                    { name: 'シネスイッチ銀座', url: 'https://cineswitch.com/', area: '東京・丸の内エリア', twitter: '@cineswitch', mapUrl: 'https://maps.app.goo.gl/Ba2hpeaZFrgL6N6Q6' },
+                    { name: '渋谷HUMAXシネマ', url: 'https://www.humax-cinema.co.jp/shibuya/', area: '渋谷・恵比寿エリア', station: '渋谷駅', twitter: '@HUMAX_SHIBUYA', mapUrl: 'https://maps.app.goo.gl/VNTBcYEKYMDisqjJA' },
+                    { name: 'TOHOシネマズ 渋谷', url: 'https://hlo.tohotheater.jp/net/schedule/043/TNPI2000J01.do', area: '渋谷・恵比寿エリア', station: '渋谷駅', twitter: '@tohocinemas_m', mapUrl: 'https://maps.app.goo.gl/CdUAZfQmAosKNcEs8' },
+                    { name: 'TOHOシネマズ 新宿', url: 'https://hlo.tohotheater.jp/net/schedule/076/TNPI2000J01.do', area: '新宿・高田馬場エリア', station: '新宿駅', twitter: '@tohocinemas_m', mapUrl: 'https://maps.app.goo.gl/nnFeHFgYSzgTz9n7A' },
+                    { name: '池袋HUMAXシネマズ', url: 'https://www.humax-cinema.co.jp/ikebukuro/', area: '池袋エリア', station: '池袋駅', twitter: '@HUMAX_IKEBUKURO', mapUrl: 'https://maps.app.goo.gl/tVR9htRLMYKF7q58A' },
+                    { name: 'グランドシネマサンシャイン池袋', url: 'https://www.cinemasunshine.co.jp/theater/gdcs/', area: '池袋エリア', station: '池袋駅', twitter: '@cs_ikebukuro', mapUrl: 'https://maps.app.goo.gl/Lpzf64Dm3oLeFKY88' },
+                    { name: 'TOHOシネマズ 池袋', url: 'https://hlo.tohotheater.jp/net/schedule/084/TNPI2000J01.do', area: '池袋エリア', station: '池袋駅', twitter: '@tohocinemas_m', mapUrl: 'https://maps.app.goo.gl/p6Sx7pKAXXvCuEBL6' },
+                    { name: 'TOHOシネマズ 日比谷 シャンテ', url: 'https://hlo.tohotheater.jp/net/schedule/081/TNPI2000J01.do', area: '東京・丸の内エリア', station: '日比谷駅', twitter: '@tohocinemas_m', mapUrl: 'https://maps.app.goo.gl/CRKxwb5bXfQ94KNZ7' },
+                    { name: 'ヒューマントラストシネマ有楽町', url: 'https://ttcg.jp/human_yurakucho/', area: '東京・丸の内エリア', station: '有楽町駅', twitter: '@htc_yurakucho', mapUrl: 'https://maps.app.goo.gl/NNpotbTyJws9vkMm7' },
+                    { name: '丸の内ピカデリー', url: 'https://www.smt-cinema.com/site/marunouchi/index.html', area: '東京・丸の内エリア', station: '有楽町駅', twitter: '@smt_cinema', mapUrl: 'https://maps.app.goo.gl/Ugjyq3moPc9Q8y836' },
+                    { name: 'kino cinéma立川髙島屋S.C.館', url: 'https://kinocinema.jp/tachikawa/', area: '23区外', station: '立川駅', twitter: '@kinocinema2', mapUrl: 'https://maps.app.goo.gl/gNgeEwk1goyRs6h88' },
+                    { name: 'シネマシティ', url: 'https://cinemacity.co.jp/', area: '23区外', station: '立川駅', twitter: '@cinemacity_jp', mapUrl: 'https://maps.app.goo.gl/oXKSaZJa94BeuwNBA' },
+                    { name: 'TOHOシネマズ 立川立飛', url: 'https://hlo.tohotheater.jp/net/schedule/085/TNPI2000J01.do', area: '23区外', station: '立川駅', twitter: '@tohocinemas_m', mapUrl: 'https://maps.app.goo.gl/VYD15x7QH9vjyfQD9' },
+                    { name: '109シネマズ 木場', url: 'https://109cinemas.net/kiba/', area: 'その他23区内', station: '木場駅', twitter: '@109_kiba', mapUrl: 'https://maps.app.goo.gl/B3Rxd2i8tBX8jDE58' },
+                    { name: '109シネマズグランベリーパーク', url: 'https://109cinemas.net/grandberrypark/', area: '23区外', station: '南町田グランベリーパーク駅', twitter: '@109_GP', mapUrl: 'https://maps.app.goo.gl/rHt8cYZFPNrQRQtaA' },
+                    { name: '109シネマズ二子玉川', url: 'https://109cinemas.net/futakotamagawa/', area: 'その他23区内', station: '二子玉川駅', twitter: '@109_futako', mapUrl: 'https://maps.app.goo.gl/1yG7LruyDaQZCdf58' },
+                    { name: 'シネマサンシャイン 平和島', url: 'https://www.cinemasunshine.co.jp/theater/heiwajima/', area: 'その他23区内', station: '平和島駅', twitter: '@sunshine_imm', mapUrl: 'https://maps.app.goo.gl/Fx3dpKC7cYPTFotF9' },
+                    { name: 'T・ジョイSEIBU大泉', url: 'https://tjoy.jp/t-joy_seibu_oizumi', area: 'その他23区内', station: '大泉学園駅', twitter: '@tjoy_oizumi', mapUrl: 'https://maps.app.goo.gl/u4JDVrVuqxppqJ6w9' },
+                    { name: 'T・ジョイPRINCE品川', url: 'https://tjoy.jp/tjoy-prince-shinagawa', area: 'その他23区内', station: '品川駅', twitter: '@TPShinagawa', mapUrl: 'https://maps.app.goo.gl/rkHpoGGFmfxRTR7j7' },
+                    { name: 'TOHOシネマズ 上野', url: 'https://hlo.tohotheater.jp/net/schedule/080/TNPI2000J01.do', area: 'その他23区内', station: '上野駅', twitter: '@tohocinemas_m', mapUrl: 'https://maps.app.goo.gl/hgP98G9Q3eLW1eVp8' },
+                    { name: 'TOHOシネマズ 錦糸町（楽天地・オリナス）', url: 'https://hlo.tohotheater.jp/net/schedule/029/TNPI2000J01.do', area: 'その他23区内', station: '錦糸町駅', twitter: '@tohocinemas_m', mapUrl: 'https://maps.app.goo.gl/KqkjmVZJ9fDGRQao7' },
+                    { name: 'TOHOシネマズ 西新井', url: 'https://hlo.tohotheater.jp/net/schedule/040/TNPI2000J01.do', area: 'その他23区内', station: '西新井駅', twitter: '@tohocinemas_m', mapUrl: 'https://maps.app.goo.gl/NT8AKanHvBgiChPr6' },
+                    { name: 'TOHOシネマズ 日本橋', url: 'https://hlo.tohotheater.jp/net/schedule/073/TNPI2000J01.do', area: 'その他23区内', station: '日本橋駅', twitter: '@tohocinemas_m', mapUrl: 'https://maps.app.goo.gl/Hhgk9k1oHWrjxWWj8' },
+                    { name: 'TOHOシネマズ 府中', url: 'https://hlo.tohotheater.jp/net/schedule/012/TNPI2000J01.do', area: '23区外', station: '府中駅', twitter: '@tohocinemas_m', mapUrl: 'https://maps.app.goo.gl/mRYRMtyoSK3c2YkK8' },
+                    { name: 'TOHOシネマズ 南大沢', url: 'https://hlo.tohotheater.jp/net/schedule/006/TNPI2000J01.do', area: '23区外', station: '南大沢駅', twitter: '@tohocinemas_m', mapUrl: 'https://maps.app.goo.gl/xJZcD25Z9YhEx5xA6' },
+                    { name: 'TOHOシネマズ 六本木ヒルズ', url: 'https://hlo.tohotheater.jp/net/schedule/009/TNPI2000J01.do', area: 'その他23区内', station: '六本木駅', twitter: '@tohocinemas_m', mapUrl: 'https://maps.app.goo.gl/V5pwRqJLJR58Z1w4A' },
+                    { name: 'MOVIX昭島', url: 'https://www.smt-cinema.com/site/akishima/index.html', area: '23区外', station: '昭島駅', twitter: '@smt_cinema', mapUrl: 'https://maps.app.goo.gl/CoBuyEsoNYaoo5oB8' },
+                    { name: 'MOVIX亀有', url: 'https://www.smt-cinema.com/site/kameari/index.html', area: 'その他23区内', station: '亀有駅', twitter: '@smt_cinema', mapUrl: 'https://maps.app.goo.gl/G17wR161dvQLMNsE8' },
+                    { name: 'ユナイテッド・シネマ アクアシティお台場', url: 'https://www.unitedcinemas.jp/odaiba/index.html', area: 'その他23区内', station: 'お台場海浜公園駅', twitter: '@UNITED_CINEMAS', mapUrl: 'https://maps.app.goo.gl/ZynQ9hUVePs3DbYM7' },
+                    { name: 'ユナイテッド・シネマ としまえん', url: 'https://www.unitedcinemas.jp/toshimaen/index.html', area: 'その他23区内', station: '豊島園駅', twitter: '@UNITED_CINEMAS', mapUrl: 'https://maps.app.goo.gl/DP57A3EUtNkMUHQt5' },
+                    { name: 'ユナイテッド・シネマ 豊洲', url: 'https://www.unitedcinemas.jp/toyosu/index.html', area: 'その他23区内', station: '豊洲駅', twitter: '@UNITED_CINEMAS', mapUrl: 'https://maps.app.goo.gl/rYe2fSzqaz8oDHMC9' },
+                    { name: 'イオンシネマ 板橋', url: 'https://www.aeoncinema.com/cinema/itabashi/', area: 'その他23区内', station: '板橋駅', twitter: '@AC_itabashi', mapUrl: 'https://maps.app.goo.gl/ckP2h61vixKWomD79' },
+                    { name: 'イオンシネマ 多摩センター', url: 'https://www.aeoncinema.com/cinema/tama/', area: '23区外', station: '多摩センター駅', twitter: '@ac_tamacenter', mapUrl: 'https://maps.app.goo.gl/2abXuoBN8nXxfQ6K6' },
+                    { name: 'イオンシネマ 日の出', url: 'https://www.aeoncinema.com/cinema/hinode/', area: '23区外', station: '武蔵引田駅', twitter: '@ac_hinode', mapUrl: 'https://maps.app.goo.gl/wdcuTeEPZZwWApGW8' },
+                    { name: 'イオンシネマ むさし村山', url: 'https://www.aeoncinema.com/cinema/musashino/', area: '23区外', station: '立川北駅', twitter: '@ac_musashimu', mapUrl: 'https://maps.app.goo.gl/GR3rUDhXirK197wn6' }
                 ],
                 2: [{ name: 'シネマネコ（ネコデイ）', url: 'https://cinema-neko.com/', area: '23区外', station: '武蔵境駅', twitter: '@CinemaNeko_JP' }],
                 6: [{ name: 'ポレポレ東中野', url: 'https://www.mmjp.or.jp/pole2/', area: 'その他23区内' }],
@@ -181,10 +214,14 @@
                 ],
                 25: [{ name: 'シネマート新宿', url: 'https://www.cinemart.co.jp/theater/shinjuku/', area: '新宿・高田馬場' }],
                 月曜: [
-                    { name: 'シアタス調布', url: 'https://www.aeoncinema.com/cinema/chofu/', area: '23区外', station: '調布駅', twitter: '@ac_chofu', mapUrl: 'https://maps.app.goo.gl/TidonHXXav9GNhow6' },
+                    { name: 'イオンシネマ シアタス調布', url: 'https://www.aeoncinema.com/cinema/chofu/', area: '23区外', station: '調布駅', twitter: '@ac_chofu', mapUrl: 'https://maps.app.goo.gl/TidonHXXav9GNhow6' },
                     { name: '阿佐ヶ谷Morc', url: 'https://www.morc-asagaya.com/', area: '阿佐ヶ谷エリア', station: '阿佐ヶ谷駅', twitter: '@morc_staff', mapUrl: 'https://maps.app.goo.gl/26DbkHWF1hvcu9FP6' },
                     { name: 'シアター・イメージフォーラム', url: 'https://www.imageforum.co.jp/', area: '渋谷・恵比寿エリア', station: '渋谷駅', twitter: '@Image_forum', mapUrl: 'https://maps.app.goo.gl/YtFagin6hhxtNpTU9' },
-                    { name: 'シネマート新宿（月曜ペアデイ）', url: 'https://www.cinemart.co.jp/theater/shinjuku/', area: '新宿・高田馬場エリア', twitter: '@cinemart_tokyo' }
+                    { name: 'シネマート新宿（月曜ペアデイ）', url: 'https://www.cinemart.co.jp/theater/shinjuku/', area: '新宿・高田馬場エリア', twitter: '@cinemart_tokyo' },
+                    { name: 'イオンシネマ 板橋', url: 'https://www.aeoncinema.com/cinema/itabashi/', area: 'その他23区内', station: '板橋駅', twitter: '@AC_itabashi', mapUrl: 'https://maps.app.goo.gl/ckP2h61vixKWomD79' },
+                    { name: 'イオンシネマ 多摩センター', url: 'https://www.aeoncinema.com/cinema/tama/', area: '23区外', station: '多摩センター駅', twitter: '@ac_tamacenter', mapUrl: 'https://maps.app.goo.gl/2abXuoBN8nXxfQ6K6' },
+                    { name: 'イオンシネマ 日の出', url: 'https://www.aeoncinema.com/cinema/hinode/', area: '23区外', station: '武蔵引田駅', twitter: '@ac_hinode', mapUrl: 'https://maps.app.goo.gl/wdcuTeEPZZwWApGW8' },
+                    { name: 'イオンシネマ むさし村山', url: 'https://www.aeoncinema.com/cinema/musashino/', area: '23区外', station: '立川北駅', twitter: '@ac_musashimu', mapUrl: 'https://maps.app.goo.gl/GR3rUDhXirK197wn6' }
                 ],
                 火曜: [
                     { name: 'ユーロスペース', url: 'http://www.eurospace.co.jp/', area: '渋谷・恵比寿エリア', station: '渋谷駅', twitter: '@euro_space' },
@@ -209,7 +246,39 @@
                     { name: '恵比寿ガーデンシネマ', url: 'https://gardencinema.jp/', area: '渋谷・恵比寿エリア' },
                     { name: '阿佐ヶ谷ラピュタ', url: 'https://www.laputa-asagaya.com/', area: '阿佐ヶ谷エリア' },
                     { name: 'シネマネコ', url: 'https://cinema-neko.com/', area: '23区外' },
-                    { name: 'キネカ大森', url: 'https://www.kineca.jp/', area: 'その他23区内' }
+                    { name: 'キネカ大森', url: 'https://www.kineca.jp/', area: 'その他23区内' },
+                    { name: '渋谷HUMAXシネマ', url: 'https://www.humax-cinema.co.jp/shibuya/', area: '渋谷・恵比寿エリア', station: '渋谷駅', twitter: '@HUMAX_SHIBUYA', mapUrl: 'https://maps.app.goo.gl/VNTBcYEKYMDisqjJA' },
+                    { name: 'TOHOシネマズ 渋谷', url: 'https://hlo.tohotheater.jp/net/schedule/043/TNPI2000J01.do', area: '渋谷・恵比寿エリア', station: '渋谷駅', twitter: '@tohocinemas_m', mapUrl: 'https://maps.app.goo.gl/CdUAZfQmAosKNcEs8' },
+                    { name: 'ヒューマントラストシネマ渋谷', url: 'https://ttcg.jp/human_shibuya/', area: '渋谷・恵比寿エリア', station: '渋谷駅', twitter: '@htc_shibuya', mapUrl: 'https://maps.app.goo.gl/vbX8CD1bPHuHKCZE8' },
+                    { name: 'TOHOシネマズ 新宿', url: 'https://hlo.tohotheater.jp/net/schedule/076/TNPI2000J01.do', area: '新宿・高田馬場エリア', station: '新宿駅', twitter: '@tohocinemas_m', mapUrl: 'https://maps.app.goo.gl/nnFeHFgYSzgTz9n7A' },
+                    { name: '池袋HUMAXシネマズ', url: 'https://www.humax-cinema.co.jp/ikebukuro/', area: '池袋エリア', station: '池袋駅', twitter: '@HUMAX_IKEBUKURO', mapUrl: 'https://maps.app.goo.gl/tVR9htRLMYKF7q58A' },
+                    { name: 'グランドシネマサンシャイン池袋', url: 'https://www.cinemasunshine.co.jp/theater/gdcs/', area: '池袋エリア', station: '池袋駅', twitter: '@cs_ikebukuro', mapUrl: 'https://maps.app.goo.gl/Lpzf64Dm3oLeFKY88' },
+                    { name: 'TOHOシネマズ 池袋', url: 'https://hlo.tohotheater.jp/net/schedule/084/TNPI2000J01.do', area: '池袋エリア', station: '池袋駅', twitter: '@tohocinemas_m', mapUrl: 'https://maps.app.goo.gl/p6Sx7pKAXXvCuEBL6' },
+                    { name: 'TOHOシネマズ 日比谷 シャンテ', url: 'https://hlo.tohotheater.jp/net/schedule/081/TNPI2000J01.do', area: '東京・丸の内エリア', station: '日比谷駅', twitter: '@tohocinemas_m', mapUrl: 'https://maps.app.goo.gl/CRKxwb5bXfQ94KNZ7' },
+                    { name: 'ヒューマントラストシネマ有楽町', url: 'https://ttcg.jp/human_yurakucho/', area: '東京・丸の内エリア', station: '有楽町駅', twitter: '@htc_yurakucho', mapUrl: 'https://maps.app.goo.gl/NNpotbTyJws9vkMm7' },
+                    { name: '丸の内ピカデリー', url: 'https://www.smt-cinema.com/site/marunouchi/index.html', area: '東京・丸の内エリア', station: '有楽町駅', twitter: '@smt_cinema', mapUrl: 'https://maps.app.goo.gl/Ugjyq3moPc9Q8y836' },
+                    { name: 'kino cinéma立川髙島屋S.C.館', url: 'https://kinocinema.jp/tachikawa/', area: '23区外', station: '立川駅', twitter: '@kinocinema2', mapUrl: 'https://maps.app.goo.gl/gNgeEwk1goyRs6h88' },
+                    { name: 'シネマシティ', url: 'https://cinemacity.co.jp/', area: '23区外', station: '立川駅', twitter: '@cinemacity_jp', mapUrl: 'https://maps.app.goo.gl/oXKSaZJa94BeuwNBA' },
+                    { name: 'TOHOシネマズ 立川立飛', url: 'https://hlo.tohotheater.jp/net/schedule/085/TNPI2000J01.do', area: '23区外', station: '立川駅', twitter: '@tohocinemas_m', mapUrl: 'https://maps.app.goo.gl/VYD15x7QH9vjyfQD9' },
+                    { name: 'シネスイッチ銀座', url: 'https://cineswitch.com/', area: '東京・丸の内エリア', twitter: '@cineswitch', mapUrl: 'https://maps.app.goo.gl/Ba2hpeaZFrgL6N6Q6' },
+                    { name: '109シネマズ 木場', url: 'https://109cinemas.net/kiba/', area: 'その他23区内', station: '木場駅', twitter: '@109_kiba', mapUrl: 'https://maps.app.goo.gl/B3Rxd2i8tBX8jDE58' },
+                    { name: '109シネマズグランベリーパーク', url: 'https://109cinemas.net/grandberrypark/', area: '23区外', station: '南町田グランベリーパーク駅', twitter: '@109_GP', mapUrl: 'https://maps.app.goo.gl/rHt8cYZFPNrQRQtaA' },
+                    { name: '109シネマズ二子玉川', url: 'https://109cinemas.net/futakotamagawa/', area: 'その他23区内', station: '二子玉川駅', twitter: '@109_futako', mapUrl: 'https://maps.app.goo.gl/1yG7LruyDaQZCdf58' },
+                    { name: 'シネマサンシャイン 平和島', url: 'https://www.cinemasunshine.co.jp/theater/heiwajima/', area: 'その他23区内', station: '平和島駅', twitter: '@sunshine_imm', mapUrl: 'https://maps.app.goo.gl/Fx3dpKC7cYPTFotF9' },
+                    { name: 'T・ジョイSEIBU大泉', url: 'https://tjoy.jp/t-joy_seibu_oizumi', area: 'その他23区内', station: '大泉学園駅', twitter: '@tjoy_oizumi', mapUrl: 'https://maps.app.goo.gl/u4JDVrVuqxppqJ6w9' },
+                    { name: 'T・ジョイPRINCE品川', url: 'https://tjoy.jp/tjoy-prince-shinagawa', area: 'その他23区内', station: '品川駅', twitter: '@TPShinagawa', mapUrl: 'https://maps.app.goo.gl/rkHpoGGFmfxRTR7j7' },
+                    { name: 'TOHOシネマズ 上野', url: 'https://hlo.tohotheater.jp/net/schedule/080/TNPI2000J01.do', area: 'その他23区内', station: '上野駅', twitter: '@tohocinemas_m', mapUrl: 'https://maps.app.goo.gl/hgP98G9Q3eLW1eVp8' },
+                    { name: 'TOHOシネマズ 錦糸町（楽天地・オリナス）', url: 'https://hlo.tohotheater.jp/net/schedule/029/TNPI2000J01.do', area: 'その他23区内', station: '錦糸町駅', twitter: '@tohocinemas_m', mapUrl: 'https://maps.app.goo.gl/KqkjmVZJ9fDGRQao7' },
+                    { name: 'TOHOシネマズ 西新井', url: 'https://hlo.tohotheater.jp/net/schedule/040/TNPI2000J01.do', area: 'その他23区内', station: '西新井駅', twitter: '@tohocinemas_m', mapUrl: 'https://maps.app.goo.gl/NT8AKanHvBgiChPr6' },
+                    { name: 'TOHOシネマズ 日本橋', url: 'https://hlo.tohotheater.jp/net/schedule/073/TNPI2000J01.do', area: 'その他23区内', station: '日本橋駅', twitter: '@tohocinemas_m', mapUrl: 'https://maps.app.goo.gl/Hhgk9k1oHWrjxWWj8' },
+                    { name: 'TOHOシネマズ 府中', url: 'https://hlo.tohotheater.jp/net/schedule/012/TNPI2000J01.do', area: '23区外', station: '府中駅', twitter: '@tohocinemas_m', mapUrl: 'https://maps.app.goo.gl/mRYRMtyoSK3c2YkK8' },
+                    { name: 'TOHOシネマズ 南大沢', url: 'https://hlo.tohotheater.jp/net/schedule/006/TNPI2000J01.do', area: '23区外', station: '南大沢駅', twitter: '@tohocinemas_m', mapUrl: 'https://maps.app.goo.gl/xJZcD25Z9YhEx5xA6' },
+                    { name: 'TOHOシネマズ 六本木ヒルズ', url: 'https://hlo.tohotheater.jp/net/schedule/009/TNPI2000J01.do', area: 'その他23区内', station: '六本木駅', twitter: '@tohocinemas_m', mapUrl: 'https://maps.app.goo.gl/V5pwRqJLJR58Z1w4A' },
+                    { name: 'MOVIX昭島', url: 'https://www.smt-cinema.com/site/akishima/index.html', area: '23区外', station: '昭島駅', twitter: '@smt_cinema', mapUrl: 'https://maps.app.goo.gl/CoBuyEsoNYaoo5oB8' },
+                    { name: 'MOVIX亀有', url: 'https://www.smt-cinema.com/site/kameari/index.html', area: 'その他23区内', station: '亀有駅', twitter: '@smt_cinema', mapUrl: 'https://maps.app.goo.gl/G17wR161dvQLMNsE8' },
+                    { name: 'ユナイテッド・シネマ アクアシティお台場', url: 'https://www.unitedcinemas.jp/odaiba/index.html', area: 'その他23区内', station: 'お台場海浜公園駅', twitter: '@UNITED_CINEMAS', mapUrl: 'https://maps.app.goo.gl/ZynQ9hUVePs3DbYM7' },
+                    { name: 'ユナイテッド・シネマ としまえん', url: 'https://www.unitedcinemas.jp/toshimaen/index.html', area: 'その他23区内', station: '豊島園駅', twitter: '@UNITED_CINEMAS', mapUrl: 'https://maps.app.goo.gl/DP57A3EUtNkMUHQt5' },
+                    { name: 'ユナイテッド・シネマ 豊洲', url: 'https://www.unitedcinemas.jp/toyosu/index.html', area: 'その他23区内', station: '豊洲駅', twitter: '@UNITED_CINEMAS', mapUrl: 'https://maps.app.goo.gl/rYe2fSzqaz8oDHMC9' }
                 ],
                 木曜: [
                     { name: 'Bunkamuraル・シネマ 渋谷宮下(インターネット購入)', url: 'https://www.bunkamura.co.jp/cinema/', area: '渋谷・恵比寿エリア', twitter: '@BunkamuraCinema' },
@@ -220,6 +289,29 @@
                 日曜: [
                     { name: '角川シネマ有楽町', url: 'https://www.kadokawa-cinema.jp/', area: '東京・丸の内エリア' },
                     { name: 'Bunkamuraル・シネマ 渋谷宮下（最終回）', url: 'https://www.bunkamura.co.jp/cinema/', area: '渋谷・恵比寿エリア' }
+                ],
+                モーニングショー: [
+                    { name: 'イオンシネマ 板橋(平日10時台まで)', url: 'https://www.aeoncinema.com/cinema/itabashi/', area: 'その他23区内', station: '板橋駅', twitter: '@AC_itabashi', mapUrl: 'https://maps.app.goo.gl/ckP2h61vixKWomD79' },
+                    { name: 'イオンシネマ シアタス調布(平日10時台まで)', url: 'https://www.aeoncinema.com/cinema/chofu/', area: '23区外', station: '調布駅', twitter: '@ac_chofu', mapUrl: 'https://maps.app.goo.gl/TidonHXXav9GNhow6' },
+                    { name: 'イオンシネマ 多摩センター(平日10時台まで)', url: 'https://www.aeoncinema.com/cinema/tama/', area: '23区外', station: '多摩センター駅', twitter: '@ac_tamacenter', mapUrl: 'https://maps.app.goo.gl/2abXuoBN8nXxfQ6K6' },
+                    { name: 'イオンシネマ 日の出(平日10時台まで)', url: 'https://www.aeoncinema.com/cinema/hinode/', area: '23区外', station: '武蔵引田駅', twitter: '@ac_hinode', mapUrl: 'https://maps.app.goo.gl/wdcuTeEPZZwWApGW8' },
+                    { name: 'イオンシネマ むさし村山(平日10時台まで)', url: 'https://www.aeoncinema.com/cinema/musashino/', area: '23区外', station: '立川北駅', twitter: '@ac_musashimu', mapUrl: 'https://maps.app.goo.gl/GR3rUDhXirK197wn6' }
+                ],
+                レイトショー: [
+                    { name: 'イオンシネマ 板橋(平日20時以降)', url: 'https://www.aeoncinema.com/cinema/itabashi/', area: 'その他23区内', station: '板橋駅', twitter: '@AC_itabashi', mapUrl: 'https://maps.app.goo.gl/ckP2h61vixKWomD79' },
+                    { name: 'イオンシネマ シアタス調布(平日20時以降)', url: 'https://www.aeoncinema.com/cinema/chofu/', area: '23区外', station: '調布駅', twitter: '@ac_chofu', mapUrl: 'https://maps.app.goo.gl/TidonHXXav9GNhow6' },
+                    { name: 'イオンシネマ 多摩センター(平日20時以降)', url: 'https://www.aeoncinema.com/cinema/tama/', area: '23区外', station: '多摩センター駅', twitter: '@ac_tamacenter', mapUrl: 'https://maps.app.goo.gl/2abXuoBN8nXxfQ6K6' },
+                    { name: 'イオンシネマ 日の出(平日20時以降)', url: 'https://www.aeoncinema.com/cinema/hinode/', area: '23区外', station: '武蔵引田駅', twitter: '@ac_hinode', mapUrl: 'https://maps.app.goo.gl/wdcuTeEPZZwWApGW8' },
+                    { name: 'イオンシネマ むさし村山(平日20時以降)', url: 'https://www.aeoncinema.com/cinema/musashino/', area: '23区外', station: '立川北駅', twitter: '@ac_musashimu', mapUrl: 'https://maps.app.goo.gl/GR3rUDhXirK197wn6' },
+                    { name: '109シネマズ 木場(平日20時以降)', url: 'https://109cinemas.net/kiba/', area: 'その他23区内', station: '木場駅', twitter: '@109_kiba', mapUrl: 'https://maps.app.goo.gl/B3Rxd2i8tBX8jDE58' },
+                    { name: '109シネマズグランベリーパーク(平日20時以降)', url: 'https://109cinemas.net/grandberrypark/', area: '23区外', station: '南町田グランベリーパーク駅', twitter: '@109_GP', mapUrl: 'https://maps.app.goo.gl/rHt8cYZFPNrQRQtaA' },
+                    { name: 'シネマサンシャイン 平和島(平日20時以降)', url: 'https://www.cinemasunshine.co.jp/theater/heiwajima/', area: 'その他23区内', station: '平和島駅', twitter: '@sunshine_imm', mapUrl: 'https://maps.app.goo.gl/Fx3dpKC7cYPTFotF9' },
+                    { name: 'T・ジョイSEIBU大泉(平日20時以降)', url: 'https://tjoy.jp/t-joy_seibu_oizumi', area: 'その他23区内', station: '大泉学園駅', twitter: '@tjoy_oizumi', mapUrl: 'https://maps.app.goo.gl/u4JDVrVuqxppqJ6w9' },
+                    { name: 'T・ジョイPRINCE品川(平日20時以降)', url: 'https://tjoy.jp/tjoy-prince-shinagawa', area: 'その他23区内', station: '品川駅', twitter: '@TPShinagawa', mapUrl: 'https://maps.app.goo.gl/rkHpoGGFmfxRTR7j7' },
+                    { name: 'TOHOシネマズ 錦糸町(平日20時以降)', url: 'https://hlo.tohotheater.jp/net/schedule/029/TNPI2000J01.do', area: 'その他23区内', station: '錦糸町駅', twitter: '@tohocinemas_m', mapUrl: 'https://maps.app.goo.gl/KqkjmVZJ9fDGRQao7' },
+                    { name: 'TOHOシネマズ 府中(平日20時以降)', url: 'https://hlo.tohotheater.jp/net/schedule/012/TNPI2000J01.do', area: '23区外', station: '府中駅', twitter: '@tohocinemas_m', mapUrl: 'https://maps.app.goo.gl/mRYRMtyoSK3c2YkK8' },
+                    { name: 'MOVIX昭島(平日20時以降)', url: 'https://www.smt-cinema.com/site/akishima/index.html', area: '23区外', station: '昭島駅', twitter: '@smt_cinema', mapUrl: 'https://maps.app.goo.gl/CoBuyEsoNYaoo5oB8' },
+                    { name: 'MOVIX亀有(平日20時以降)', url: 'https://www.smt-cinema.com/site/kameari/index.html', area: 'その他23区内', station: '亀有駅', twitter: '@smt_cinema', mapUrl: 'https://maps.app.goo.gl/G17wR161dvQLMNsE8' }
                 ],
                 ラスト1本: [
                     { name: '早稲田松竹（ラスト1本割引※最終回（一本）のみ）', url: 'https://wasedashochiku.co.jp/', area: '新宿・高田馬場エリア', type: '常時', station: '早稲田駅', twitter: '@wasedashochiku' },
@@ -232,10 +324,8 @@
                     { name: '国立映画アーカイブ', url: 'https://www.nfaj.go.jp/', area: '特殊施設', type: '常時', station: '京橋駅', twitter: '@NFAJ_PR' },
                     { name: '新文芸坐（2本目割引・上映毎料金変動）', url: 'https://www.shin-bungeiza.com/', area: '池袋エリア', type: '常時', station: '池袋駅', twitter: '@shin_bungeiza' }
                 ],
-                不定期: [
-                    { name: 'アテネ・フランセ文化センター', url: 'https://www.athenee.jp/', area: '特殊施設' },
-                    { name: '神保町シアター', url: 'https://www.iwanami-hall.com/', area: '神保町エリア' },
-                    { name: '東京都写真美術館', url: 'https://topmuseum.jp/', area: '特殊施設', station: '恵比寿駅', twitter: '@topmuseum' }
+                '1日のみ': [
+                    { name: '109シネマズプレミアム新宿（毎月1日のみ）', url: 'https://109cinemas.net/premiumshinjuku/', area: '特殊施設', type: '1日のみ', station: '新宿駅', twitter: '@109_PREMIUM_SJ', mapUrl: 'https://maps.app.goo.gl/NzQ6ZyCxQPbBt5vK9' }
                 ]
             };
 
@@ -245,6 +335,9 @@
                 
                 let todayCinemas = [];
                 let alwaysCinemas = [];
+                let morningCinemas = [];
+                let lateCinemas = [];
+                let firstDayOnlyCinemas = [];
                 
                 if (cinemaData[day]) {
                     todayCinemas = [...todayCinemas, ...cinemaData[day]];
@@ -257,10 +350,26 @@
                     todayCinemas = [...todayCinemas, ...cinemaData[todayName]];
                 }
                 
+                // モーニングショー（11時前のみ表示）
+                if (currentHour < 11 && cinemaData['モーニングショー']) {
+                    morningCinemas = [...cinemaData['モーニングショー']];
+                }
+                
+                // レイトショー（常に表示）
+                if (cinemaData['レイトショー']) {
+                    lateCinemas = [...cinemaData['レイトショー']];
+                }
+                
+                // 1日のみ特殊料金（毎月1日のみ表示）
+                if (day === 1 && cinemaData['1日のみ']) {
+                    firstDayOnlyCinemas = [...cinemaData['1日のみ']];
+                }
+                
                 alwaysCinemas = [
                     ...cinemaData['ラスト1本'],
                     ...cinemaData['18時以降'],
-                    ...cinemaData['1000円']
+                    ...cinemaData['1000円'],
+                    ...firstDayOnlyCinemas
                 ];
                 
                 const groupByArea = (cinemas) => {
@@ -282,7 +391,9 @@
                 
                 return {
                     today: groupByArea(todayCinemas),
-                    always: groupByArea(alwaysCinemas)
+                    always: groupByArea(alwaysCinemas),
+                    morning: groupByArea(morningCinemas),
+                    late: groupByArea(lateCinemas)
                 };
             };
 
@@ -448,6 +559,8 @@
                     </div>
                     
                     {renderAreaSection(`📅 ${currentDate.getDate()}日${['日', '月', '火', '水', '木', '金', '土'][currentDate.getDay()]}曜サービスデーの映画館`, cinemasByArea.today)}
+                    {renderAreaSection('🌅 モーニングショー', cinemasByArea.morning)}
+                    {renderAreaSection('🌙 レイトショー', cinemasByArea.late)}
                     {renderAreaSection('💰 特殊料金', cinemasByArea.always)}
                     
                     {/* フッター上の広告エリア */}
@@ -475,7 +588,7 @@
                             </a>
                         </div>
                         <p className="text-gray-500 text-sm">各映画館の上映情報は「上映情報」ボタンから確認できます</p>
-                        <p className="text-gray-600 text-xs mt-2">2026.01.29.006</p>
+                        <p className="text-gray-600 text-xs mt-2">2026.01.30.002</p>
                     </footer>
                 </div>
             );
